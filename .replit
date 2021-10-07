@@ -1,0 +1,2 @@
+language = "c"
+run = "./AllocTracker/build.sh > log.txt 2>&1"

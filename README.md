@@ -1,2 +1,3 @@
 # cplus
-The C+ (pronounced: half-assed) programming language 
+
+Snippets and tricks to make C programs "more better". 
