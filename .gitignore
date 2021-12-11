@@ -1,3 +1,9 @@
+# CLion
+.idea/
+
+# CMake
+cmake-build-debug/
+
 # Prerequisites
 *.d
 
