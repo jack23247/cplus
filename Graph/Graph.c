@@ -1,14 +1,21 @@
 /* Graph.c
-* Implementation of a compact graph G(V,E) and of some algorithms.
-*
-* Copyright (c) 2021, Jacopo Maltagliati
-* Released under the BSD 3-Clause License.
-*/
+ * Implementation of a compact graph G(V,E) and of some algorithms.
+ *
+ * Copyright (c) 2021, Jacopo Maltagliati
+ * Released under the BSD 3-Clause License.
+ */
 
 #include "Graph.h"
 
+/**
+ *
+ * @param vertices
+ * @param vertex_list
+ * @return
+ */
 Graph__t* Graph__New(const size_t vertices, Graph__Vertex_t* vertex_list) {
-    Graph__t* tmp = (Graph__t*)AllocTracker__New(sizeof(Graph__t));
+    Graph__t* tmp = NULL;
+    tmp = (Graph__t*)AllocTracker__New(sizeof(Graph__t));
     tmp->vertices = vertices;
     tmp->vertex_list = vertex_list;
     // Allocate a row of n pointers with <n=vertices>
@@ -17,41 +24,44 @@ Graph__t* Graph__New(const size_t vertices, Graph__Vertex_t* vertex_list) {
         // Allocate n columns of n floats with <n=vertices>
         tmp->edge_matrix[i] = AllocTracker__New(vertices * sizeof(float));
         for (size_t j = 0; j < vertices; j++) {
-            tmp->edge_matrix[i][j] = 0.0;
+            tmp->edge_matrix[i][j] = (float)0.0;
         }
     }
     return tmp;
 }
 
-Graph__Vertex_t* Graph__StringToVertexList(char* string, char sep,
+Graph__Vertex_t* Graph__StringToVertexList(const char* string, const char sep,
                                            size_t* vertices) {
-    size_t i, j = 0;
-    Graph__Vertex_t* ret;
-    Graph__Vertex_t* tmp =
-        (Graph__Vertex_t*)AllocTracker__New(sizeof(Graph__Vertex_t));
-    *vertices = 0;
+    Graph__Vertex_t* ret = NULL;
+    Graph__Vertex_t* tmp = NULL;
+    char* buf = NULL;
+    char* name = NULL;
+    tmp = (Graph__Vertex_t*)AllocTracker__New(sizeof(Graph__Vertex_t));
+    *vertices = 1;
+    tmp->next = NULL;
     ret = tmp;
-    while (string[i] != '\0') {
-        if (string[i] == sep) {
-            for (; j < 4; j++) tmp->name[j] = '\0';
-            j = 0;
-            tmp->next =
-                (Graph__Vertex_t*)AllocTracker__New(sizeof(Graph__Vertex_t));
-            tmp = tmp->next;
-            (*vertices)++;
-        } else if (j < 4) {
-            tmp->name[j] = string[i];
-            j++;
-        }
-        i++;
+    buf = (char*)AllocTracker__New(strlen(string) + 1);
+    memcpy(buf, string, strlen(string) + 1);
+    name = strtok(buf, &sep);
+    while (name != NULL) {
+        // memset(tmp->name,0,4); // xxx useful?
+        strncpy(tmp->name, name, 4);
+        name = strtok(NULL, &sep);
+        if(name == NULL) continue;
+        tmp->next =
+            (Graph__Vertex_t*)AllocTracker__New(sizeof(Graph__Vertex_t));
+        tmp->next->next = NULL;
+        (*vertices)++;
+        tmp = tmp->next;
     }
+    AllocTracker__Destroy(buf);
     return ret;
 }
 
-void Graph__CompileEdgeMatrix(char* string, char sep, char next,
-                              Graph__t* graph) {
+void Graph__CompileEdgeMatrix(const char* string, char sep, char next,
+                              Graph__t* graph) { // todo loop->strtok()
     size_t i = 0, j = 0;
-    int a = 0, b = 0;
+    int a, b;
     size_t sect = 0;
     char tmp[4];
     char src[5];
@@ -103,6 +113,7 @@ void Graph__CompileEdgeMatrix(char* string, char sep, char next,
 }
 
 int Graph__LookupVertexByName(const Graph__t* graph, const char* name) {
+    if (graph == NULL || name == NULL) return -1;
     int count = 0;
     Graph__Vertex_t* cur = graph->vertex_list;
     if (cur == NULL) return -1;

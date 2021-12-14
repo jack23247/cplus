@@ -9,11 +9,11 @@
 #include "stdio.h"
 
 int main(void) {
-    Graph__Vertex_t* vlist;
+    Graph__Vertex_t* vlist = NULL;
     size_t vsize;
-    Graph__t* g1;
+    Graph__t* g1 = NULL;
     AllocTracker__Init();
-    vlist = Graph__StringToVertexList("pippo,pluto,pap,11,g,7,", ',', &vsize);
+    vlist = Graph__StringToVertexList("pippo,pluto,pap,11,g,7,,,,,,,,,,,,,,,,,,", ',', &vsize);
     g1 = Graph__New(vsize, vlist);
     Graph__CompileEdgeMatrix("pippo,pluto,3.14;11,g,1;", ',', ';', g1);
     //printf("Test: %s\n", g1->name);

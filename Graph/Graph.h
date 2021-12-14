@@ -22,7 +22,7 @@
 };*/
 
 struct Graph__Vertex {
-    char name[4];
+    char name[5];
     struct Graph__Vertex* next;
 };
 
@@ -47,7 +47,7 @@ typedef struct Graph__ Graph__t;
 
 Graph__t* Graph__New(const size_t vertices, Graph__Vertex_t* vertex_list);
 
-Graph__Vertex_t* Graph__StringToVertexList(char* string, char sep,
+Graph__Vertex_t* Graph__StringToVertexList(const char* string, const char sep,
                                            size_t* vertices);
 
 int Graph__LookupVertexByName(const Graph__t* graph, const char* name);
@@ -55,7 +55,8 @@ int Graph__LookupVertexByName(const Graph__t* graph, const char* name);
 inline int Graph__LookupVertex(const Graph__t* graph, const Graph__Vertex_t* vertex) {
     return Graph__LookupVertexByName(graph, vertex->name);
 }
-void Graph__CompileEdgeMatrix(char* string, char sep, char next,
+
+void Graph__CompileEdgeMatrix(const char* string, char sep, char next,
                               Graph__t* graph);
 
 bool Graph__VertexCover(Graph__t* graph, char* test_set);
