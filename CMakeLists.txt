@@ -4,3 +4,4 @@ project(cplus C)
 set(CMAKE_C_STANDARD 11)
 
 add_subdirectory(AllocTracker)
+add_subdirectory(Graph)

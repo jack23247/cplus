@@ -14,13 +14,13 @@
 #define AT_NOT_FOUND 1
 
 struct AllocTracker__Record {
-  void* heapRegion;
-  struct AllocTracker__Record* nextRecord;
+  void* heap_region;
+  struct AllocTracker__Record* next_record;
 };
 
 /* // todo btree version
 struct AllocTracker__LRRecord { // Left -> Smaller, Right -> Bigger
-    void* heapRegion;
+    void* heap_region;
     size_t regionSize;
     struct AllocTracker__LRRecord* nextRecordL;
     struct AllocTracker__LRRecord* nextRecordR;
@@ -36,6 +36,6 @@ void AllocTracker__Cleanup();
 void AllocTracker__Exit(int status);
 
 void* AllocTracker__New(size_t size);
-int AllocTracker__Destroy(void* memoryArea);
+int AllocTracker__Destroy(void* memory_area);
 
 #endif  // __ALLOCTRACKER_H

@@ -1,4 +1,8 @@
-add_executable(AllocTracker
+add_library(AllocTracker
         AllocTracker.c
-        AllocTracker.h
+        AllocTracker.h)
+
+add_executable(AllocTrackerDemo
         Main.c)
+
+target_link_libraries(AllocTrackerDemo AllocTracker)

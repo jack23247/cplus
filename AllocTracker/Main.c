@@ -47,9 +47,9 @@ int main() {
     }
 
     printf("Allocating a 16 byte char array and storing a string into it...\n");
-    char* heapString = (char*)AllocTracker__New(16);
-    strcpy(heapString, "Hello!\0");
-    printf("This string is stored in the heap: \"%s\".\n", heapString);
+    char* heap_string = (char*)AllocTracker__New(16);
+    strcpy(heap_string, "Hello!\0");
+    printf("This string is stored in the heap: \"%s\".\n", heap_string);
 
     // AllocTracker handles cleanup
     AllocTracker__Exit(EXIT_SUCCESS);
@@ -61,9 +61,9 @@ int main() {
     printf("Allocating 4096 bytes...\n");
     malloc(4096);
     printf("Allocating a 16 byte char array and storing a string into it...\n");
-    char* heapString = (char*)malloc(16);
-    strcpy(heapString, "Hello!\0");
-    printf("This string is stored in the heap: \"%s\".\n", heapString);
+    char* heap_string = (char*)malloc(16);
+    strcpy(heap_string, "Hello!\0");
+    printf("This string is stored in the heap: \"%s\".\n", heap_string);
     // Here we should manually free() everything
     exit(EXIT_SUCCESS);
 #endif

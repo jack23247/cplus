@@ -7,14 +7,14 @@
 
 #include "AllocTracker.h"
 
-void AllocTracker__Init() { AllocTracker__globTable = NULL; }
+void AllocTracker__Init() { AllocTracker__globTable = NULL; } // xxx paranoid?
 
 void AllocTracker__Cleanup() {
     AllocTracker__Record_t* old;
     while (AllocTracker__globTable != NULL) {
         old = AllocTracker__globTable;
-        free(old->heapRegion);
-        AllocTracker__globTable = old->nextRecord;
+        free(old->heap_region);
+        AllocTracker__globTable = old->next_record;
         free(old);
     }
 }
@@ -29,28 +29,28 @@ void* AllocTracker__New(size_t size) {
     if (AllocTracker__globTable == NULL) {  // The Allocation Table's empty
         AllocTracker__globTable =
             (AllocTracker__Record_t*)malloc(sizeof(AllocTracker__Record_t));
-        AllocTracker__globTable->nextRecord = NULL;
+        AllocTracker__globTable->next_record = NULL;
     } else {  // There's something else in the Allocation Table
         tmp = AllocTracker__globTable;
         AllocTracker__globTable =
             (AllocTracker__Record_t*)malloc(sizeof(AllocTracker__Record_t));
-        AllocTracker__globTable->nextRecord = tmp;
+        AllocTracker__globTable->next_record = tmp;
     }
-    AllocTracker__globTable->heapRegion = malloc(size);
-    return (AllocTracker__globTable->heapRegion);
+    AllocTracker__globTable->heap_region = malloc(size);
+    return (AllocTracker__globTable->heap_region);
 }
 
-int AllocTracker__Destroy(void* heapRegion) {
+int AllocTracker__Destroy(void* memory_area) {
     AllocTracker__Record_t* cur = AllocTracker__globTable;
-    while (cur->nextRecord != NULL) {
-        if (cur->nextRecord->heapRegion != heapRegion) {
-            cur = cur->nextRecord;
+    while (cur->next_record != NULL) {
+        if (cur->next_record->heap_region != memory_area) {
+            cur = cur->next_record;
             continue;
         } else {
-            free(cur->nextRecord->heapRegion);
-            AllocTracker__Record_t* tmp = cur->nextRecord->nextRecord;
-            free(cur->nextRecord);
-            cur->nextRecord = tmp;
+            free(cur->next_record->heap_region);
+            AllocTracker__Record_t* tmp = cur->next_record->next_record;
+            free(cur->next_record);
+            cur->next_record = tmp;
             return AT_OK;
         }
     }
