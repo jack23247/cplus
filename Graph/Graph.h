@@ -1,6 +1,10 @@
-//
-// Created by quartz on 14/12/21.
-//
+/* Graph.c
+* Definitions for a compact graph G(V,E) and of some algorithms.
+*
+* Copyright (c) 2021, Jacopo Maltagliati
+* Released under the BSD 3-Clause License.
+ */
+
 
 #ifndef __GRAPH_H
 #define __GRAPH_H
@@ -8,6 +12,7 @@
 #include "../AllocTracker/AllocTracker.h"
 #include "stdbool.h"
 #include "string.h"
+#include "stdio.h"
 
 /*enum Graph__EdgeDir {
     none,
@@ -45,8 +50,17 @@ Graph__t* Graph__New(const size_t vertices, Graph__Vertex_t* vertex_list);
 Graph__Vertex_t* Graph__StringToVertexList(char* string, char sep,
                                            size_t* vertices);
 
-int Graph__LookupVertex(const Graph__t* graph, const Graph__Vertex_t* vertex);
+int Graph__LookupVertexByName(const Graph__t* graph, const char* name);
 
+inline int Graph__LookupVertex(const Graph__t* graph, const Graph__Vertex_t* vertex) {
+    return Graph__LookupVertexByName(graph, vertex->name);
+}
+void Graph__CompileEdgeMatrix(char* string, char sep, char next,
+                              Graph__t* graph);
+
+bool Graph__VertexCover(Graph__t* graph, char* test_set);
+
+/*
 Graph__Edge_t* Graph__ReadEdge(Graph__t* graph, Graph__Vertex_t* src,
                                Graph__Vertex_t* dest);
 
@@ -56,5 +70,5 @@ void Graph__WriteEdge(Graph__t* graph, Graph__Vertex_t* src,
 void Graph__ExportEdges(Graph__t* graph, char sep);
 
 void Graph__ImportEdges(const char sep);
-
+*/
 #endif  // __GRAPH_H
